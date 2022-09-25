@@ -1,0 +1,45 @@
+{% extends 'list.html' %}
+{% load static %}
+
+<div class="container-fluid px-4">
+    <!-- buscador de item -->
+    <div class="row">
+        <form action="#" method="GET">
+            <input type="number" name="item" maxlength="10">
+            <input class="btn btn-primary btn-sm" type="submit" value = "Buscar Item">
+            <a class="btn btn-primary btn-sm" href="#" role = "button">Limpiar</a>
+        </form>
+    </div>        
+</div>
+
+{% block columns %}
+    <tr>
+        <th scope = "col" > opciones </th>
+        <th scope = "col" > Auditor </th>
+        <th scope = "col" > container_tag_id </th>
+        <th scope = "col" > container_stat_dsc </th>
+        <th scope = "col" > trip_create_date </th>
+        <th scope = "col" > location_id </th>
+        <th scope = "col" > item_nbr </th>
+        <th scope = "col" > create_ts </th>   
+    </tr>
+{% endblock %}
+
+{% block rows %}
+    <tr>
+    {% for audi in object_list %}
+    <td>
+        <a  href ="{% url 'auditorias_create' %} " class="btn btn-warning btn-sm" ><i class="fas fa-edit"></i></a>
+       <!-- <button type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>-->
+    </td>
+    <td> {{audi.user }}</td>    
+    <td> {{audi.container_tag_id }}</td>
+    <td> {{audi.container_stat_dsc}} </td>
+    <td> {{audi.trip_create_date}} </td>
+    <td> {{audi.location_id}} </td>
+    <td> {{audi.item_nbr}} </td>
+    <td> {{audi.create_ts}} </td>
+
+    </tr>
+    {% endfor %}
+{% endblock %}

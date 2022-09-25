@@ -1,0 +1,263 @@
+{% extends "body.html" %}
+{% load static %}
+
+{% block head %}
+    <script src="{% static 'lib/highcharts-8.1.2/highcharts.js' %}"></script>
+    <script src="{% static 'lib/highcharts-8.1.2/modules/exporting.js' %}"></script>
+    <script src="{% static 'lib/highcharts-8.1.2/modules/export-data.js' %}"></script>
+    <script src="{% static 'lib/highcharts-8.1.2/modules/accessibility.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<main>
+    <div class="container-fluid px-4">
+        <!--  card resumen--->
+        <div class="row">
+            <!-- cajas totales -->
+            <div class="col-xl-3 col-md-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary mb-1">
+                                    Cajas Totales</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ cajas_totales }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-box-open fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- pallets totales -->
+            <div class="col-xl-3 col-md-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="m-0 font-weight-bold text-primary">
+                                    Pallet Totales</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ pallet_totales }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-pallet fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Valorizado -->
+            <div class="col-xl-3 col-md-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="m-0 font-weight-bold text-info">
+                                    $ Total Auditorias</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Etiquetas Pendientes -->
+            <div class="col-xl-3 col-md-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="m-0 font-weight-bold text-warning">
+                                    Pallet Pendientes</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-300"> {{ pallet_pendientes }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-tasks fa-2x text-warning"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  Graficos 1--->
+        <div class="row">
+            <!-- Grafico diario de auditorias-->
+            <div class="col-lg-7">
+                <div class="card mb-4">
+                    <div class="card-header"><i class="fas fa-chart-bar me-1"></i>Cantidad de Etiquetas/Cajas Diarias</div>
+                        <figure class="highcharts-figure">
+                             <div id="chart_audit"></div>
+                        </figure>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="card mb-4">
+                    <div class="card-header"><i class="fas fa-chart-bar me-1"></i>Estado de Pallets</div>
+                        <figure class="highcharts-figure">
+                            <div id="pie_chart"></div>
+                        </figure>
+                </div>
+            </div>
+        </div>
+        <!--  Graficos 2--->
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="card mb-4">
+                    <div class="card-header"><i class="fas fa-chart-bar me-1"></i>Resumen Auditores </div>
+                        <figure class="highcharts-figure">
+                             <div id="chart_auditores"></div>
+                        </figure>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+    <script type="application/javascript">
+    <!--Grafico Auditorias Diarias-->
+Highcharts.chart('chart_audit', {
+    chart: {
+        type: 'line'
+    },
+    title: {
+        text: ''
+    },
+    subtitle: {
+        text: 'Resumen Mensual'
+    },
+    xAxis: {
+        categories: []
+    },
+    yAxis: {
+        title: {
+            text: 'Cantidad Pallet/Cajas'
+        }
+    },
+    plotOptions: {
+        line: {
+            dataLabels: {
+                enabled: true
+            },
+            enableMouseTracking: false
+        }
+    },
+    series: [{
+        name: 'Cajas ',
+        data: {{graph_cajas_diarias}}
+    }, {
+        name: 'Pallets ',
+        data: {{ graph_pallet_diarios }}
+    }]
+});
+
+<!--Grafico Torta-->
+    Highcharts.chart('pie_chart', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: ''
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+            }
+        }
+    },
+    series: [{
+        name: 'Brands',
+        colorByPoint: true,
+        data: [{
+            name: 'Closed',
+            y: {{ cnt_closed }},
+            sliced: true,
+            selected: true
+        }, {
+            name: 'Combined',
+            y: {{cnt_combined}}
+        },  {
+            name: 'Awaiting Orderfill',
+            y: {{cnt_Awaiting_Orderfill}}
+        }]
+    }]
+});
+
+<!--Grafico Auditores-->
+Highcharts.chart('chart_auditores', {
+    chart: {
+        type: 'bar'
+    },
+    title: {
+        text: ''
+    },
+    subtitle: {
+        text: ''
+    },
+    xAxis: {
+        categories: ['Africa', 'America', 'Asia', 'Europe', 'Oceania'],
+        title: {
+            text: null
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Population (millions)',
+            align: 'high'
+        },
+        labels: {
+            overflow: 'justify'
+        }
+    },
+    tooltip: {
+        valueSuffix: ' millions'
+    },
+    plotOptions: {
+        bar: {
+            dataLabels: {
+                enabled: true
+            }
+        }
+    },
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'top',
+        x: -40,
+        y: 10,
+        floating: true,
+        borderWidth: 1,
+        backgroundColor:
+            Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+        shadow: true
+    },
+    credits: {
+        enabled: false
+    },
+    series: [{
+        name: 'Year 1990',
+        data: [631, 727, 3202, 721, 26]
+    }]
+});
+
+    </script>
+
+{% endblock %}
