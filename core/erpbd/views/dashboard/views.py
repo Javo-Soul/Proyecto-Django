@@ -19,7 +19,7 @@ class DashboardView(TemplateView):
 
     datos = auditorias_diarias.objects.filter(container_stat_dsc='Closed').aggregate(pallet=Count('container_tag_id', distinct=True),
                                                                                      cajas=Sum('ship_unit_qty'))
-    pallet_pendientes = asignaciones.objects.filter(user_audit_code='').count()
+    pallet_pendientes = asignaciones.objects.filter(user_audit_code=' ').count()
 
     cnt_closed = auditorias_diarias.objects.filter(container_stat_dsc='Closed').values('container_tag_id').distinct().count()
     cnt_combined = auditorias_diarias.objects.filter(container_stat_dsc='Combined').values('container_tag_id').distinct().count()

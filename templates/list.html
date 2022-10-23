@@ -1,13 +1,14 @@
 {% extends 'body.html' %}
 {% load static %}
 {% block head %}
-    <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}"/>
-    <link rel="stylesheet"
-          href="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}"/>
+<!--<link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}"/>
     <script src="{% static 'lib/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
     <script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
     <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
     <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+-->
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 
     {% block head_list %}
 
@@ -24,12 +25,19 @@
             </h3>
         </div>
         <div class="card-body">
-            <table class="table table-bordered" id="data">
+            <table id="datatablesSimple">
                 <thead>
                 {% block columns %}
 
                 {% endblock %}
                 </thead>
+                <tfoot>
+                    <tr>
+                        <th>Auditor</th>
+                        <th>container_tag_id</th>
+                        <th>location_id</th>
+                    </tr>
+                </tfoot>
                 <tbody>
                 {% block rows %}
 
@@ -37,20 +45,24 @@
                 </tbody>
             </table>
         </div>
+
         <div class="card-footer">
             {% block buttons_list %}
                 <a href="{% url 'auditorias_create' %}" class="btn btn-primary btn-flat btnTest">
                     <i class="fas fa-plus"></i> Nuevo registro
                 </a>
-                <a href="#" class="btn btn-success btn-flat">
+                <a href="{{ entity }}" class="btn btn-success btn-flat">
                     <i class="fas fa-sync"></i> Actualizar
                 </a>
             {% endblock %}
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+    <script src="{% static 'js/datatables-simple-demo.js'%}"></script>
 {% endblock %}
 
 {% block javascript %}
+<!--
     <script type="application/javascript">
         $(function () {
             $('#data').DataTable({
@@ -74,5 +86,6 @@
             });
         });
     </script>
+-->
 {% endblock %}
 
