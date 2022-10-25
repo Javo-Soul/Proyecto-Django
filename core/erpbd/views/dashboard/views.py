@@ -1,15 +1,11 @@
 from multiprocessing import context
 from pkgutil import get_data
-
 from django.shortcuts import render
 from core.erpbd.models import *
 from django.views.generic import ListView, UpdateView, TemplateView
 from django.db.models import Avg, Sum, Max, Min, Count
 from django.http import HttpResponse
-import datetime
-import csv
 from django.db.models.functions import Coalesce
-from datetime import datetime
 from core.erpbd.models import auditorias_diarias, asignaciones
 
 # Create your views here.
@@ -69,7 +65,6 @@ class DashboardView(TemplateView):
         context['todo'] = self.todo
         return context
 
-
 class DashboardRecepcionView(TemplateView):
     template_name = 'auditoria/resumen.html'
 
@@ -125,7 +120,6 @@ class DashboardRecepcionView(TemplateView):
         context['todo'] = self.todo
         return context
 
-
 class DashboardPreparadoView(TemplateView):
     template_name = 'auditoria/resumen.html'
 
@@ -180,7 +174,6 @@ class DashboardPreparadoView(TemplateView):
 
         context['todo'] = self.todo
         return context
-
 
 class DashboardDespachoView(TemplateView):
     template_name = 'auditoria/resumen.html'
@@ -257,22 +250,3 @@ def buscaritem(request):
     else:
         return render(request, 'auditoria/list.html')
 
-
-# export a excel
-def export_csv(request):
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename = auditorias' + \
-                                      str(datetime.datetime.now()) + '.csv'
-
-    writer = csv.writer(response)
-    writer.writerow(['user', 'container_tag_id', 'container_stat_dsc', 'trip_create_date', 'location_id',
-                     'item_nbr', 'create_ts'])
-
-    auditorias = auditorias_diarias.objects.all()[0:50]
-
-    for audit in auditorias:
-        writer.writerow([audit.user, audit.container_tag_id + '_', audit.container_stat_dsc, audit.trip_create_date,
-                         audit.location_id
-                            , audit.item_nbr, audit.create_ts])
-
-    return response

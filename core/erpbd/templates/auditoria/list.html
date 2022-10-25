@@ -19,10 +19,10 @@
     <tr>
     {% for audi in object_list %}
     <td>
-        <a  href ="{% url 'auditorias_create' %} " class="btn btn-warning btn-sm" ><i class="fas fa-edit"></i></a>
+        <a  href ="{% url 'auditorias_update' audi.container_tag_id %} " class="btn btn-secondary btn-sm" ><i class="fas fa-edit"></i></a>
     </td>
     <td> {{audi.user }}</td>
-    <td> {{audi.container_tag_id }}</td>
+    <td> {{audi.container_tag_id}}</td>
     <td> {{audi.container_stat_dsc}} </td>
     <td> {{audi.trip_create_date}} </td>
     <td> {{audi.location_id}} </td>
