@@ -8,7 +8,6 @@ class auditorias(models.Model):
     item_nbr = models.CharField(max_length=7)
     user_audit_code = models.CharField(max_length=10)
     fecha_asignacion = models.DateTimeField(auto_now_add=True)
-
     def __str__(self):
         return self.item_nbr
 
@@ -18,23 +17,23 @@ class auditorias(models.Model):
         db_table = 'auditorias'
         ordering = ['-fecha_asignacion']
 
-
 class asignaciones(models.Model):
     etiqueta = models.CharField(primary_key=True,max_length=21)
     user_audit_code = models.CharField(max_length=10,null=True,blank=True)
     user_supervisor_code = models.CharField(max_length=10,null=True,blank=True)
     fecha_asignacion = models.DateTimeField(auto_now = True,verbose_name = "Fecha Asignación")
-
+    container_stat_cd = models.IntegerField(default= '15' )
+    create_ts = models.DateTimeField(auto_now = True,verbose_name = "Fecha Creación Etiqueta")
     class Meta():
         verbose_name = 'asignacion'
         verbose_name_plural = 'asignaciones'
         db_table = 'asignaciones'
         ordering = ['-fecha_asignacion']
 
-
 class auditorias_diarias(models.Model):
     dc_nbr=models.CharField(max_length=10)
     user=models.CharField(max_length=8,null=True,blank=True,verbose_name = "Auditor")
+    user_supervisor_code=models.CharField(max_length=8,null=True,blank=True,verbose_name = "Supervisor")
     container_id=models.CharField(max_length=9)
     parent_container_tag_id=models.CharField(max_length=20)
     container_tag_id=models.CharField(max_length=20)
