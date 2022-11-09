@@ -4,10 +4,10 @@ from django.db import models
 
 class auditorias(models.Model):
     #verbose_name permite cambiar el nombre en el panel admin
-    etiqueta = models.CharField(primary_key=True,max_length=21,verbose_name="Etiqueta DCL")
+    container_tag_id = models.CharField(primary_key=True,max_length=21,verbose_name="Etiqueta DCL")
     item_nbr = models.CharField(max_length=7)
     user_audit_code = models.CharField(max_length=10)
-    fecha_asignacion = models.DateTimeField(auto_now_add=True)
+    fecha_asignacion = models.DateTimeField(auto_now_add=True,verbose_name='Fecha Asignación')
     def __str__(self):
         return self.item_nbr
 
@@ -18,11 +18,11 @@ class auditorias(models.Model):
         ordering = ['-fecha_asignacion']
 
 class asignaciones(models.Model):
-    etiqueta = models.CharField(primary_key=True,max_length=21)
+    container_tag_id = models.CharField(primary_key=True,max_length=21,default= '000000000000000000',verbose_name='etiqueta')
     user_audit_code = models.CharField(max_length=10,null=True,blank=True)
     user_supervisor_code = models.CharField(max_length=10,null=True,blank=True)
     fecha_asignacion = models.DateTimeField(auto_now = True,verbose_name = "Fecha Asignación")
-    container_stat_cd = models.IntegerField(default= '15' )
+    container_stat_cd = models.IntegerField(default= '15')
     create_ts = models.DateTimeField(auto_now = True,verbose_name = "Fecha Creación Etiqueta")
     class Meta():
         verbose_name = 'asignacion'
@@ -30,13 +30,23 @@ class asignaciones(models.Model):
         db_table = 'asignaciones'
         ordering = ['-fecha_asignacion']
 
+resolucion_cd = [('Pendiente','Pendiente'),
+    ('En Progreso','En Progreso'),
+    ('Terminado','Terminado'),
+    ('Cancelado','Cancelado'),]
+
+user = [('j0c0af6','Auditor 1'),
+    ('v0j0af6','Auditor 2'),
+    ('C0j0a56','Auditor 3'),
+    ('Z0j0a30','Auditor 4'),]
+
 class auditorias_diarias(models.Model):
     dc_nbr=models.CharField(max_length=10)
-    user=models.CharField(max_length=8,null=True,blank=True,verbose_name = "Auditor")
-    user_supervisor_code=models.CharField(max_length=8,null=True,blank=True,verbose_name = "Supervisor")
-    container_id=models.CharField(max_length=9)
+    user=models.CharField(max_length=8, choices = user ,verbose_name = "Auditor",default='No Asign')
+    user_supervisor_code=models.CharField(max_length=8,verbose_name = "Supervisor",default='No Asign')
     parent_container_tag_id=models.CharField(max_length=20)
-    container_tag_id=models.CharField(max_length=20)
+    container_id = models.CharField(max_length=10, verbose_name='container_id')
+    container_tag_id =models.CharField(max_length=20,verbose_name = "container_tag_id")
     container_stat_cd=models.IntegerField()
     container_stat_dsc=models.CharField(max_length=25)
     cntnr_type_code=models.IntegerField()
@@ -51,8 +61,6 @@ class auditorias_diarias(models.Model):
     dest_store_nbr=models.CharField(max_length=3)
     dc_sel_section_id=models.CharField(null=True,max_length=6)
     label_create_ts=models.DateTimeField()
-    shipping_tag_id=models.CharField(primary_key=True,max_length=20)
-    rcv_unit_tag_id=models.CharField(max_length=21)
     item_nbr=models.CharField(max_length=6)
     item1_desc=models.CharField(max_length=20)
     dpto_name=models.CharField(max_length=30)
@@ -63,6 +71,7 @@ class auditorias_diarias(models.Model):
     last_change_userid=models.CharField(max_length=15)
     last_change_ts=models.DateTimeField(auto_now=True)
     create_ts=models.DateTimeField()
+    resolucion_cd = models.CharField(max_length=13, choices=resolucion_cd ,default='Pendiente')
 
     class Meta():
         verbose_name = 'auditoria diaria'

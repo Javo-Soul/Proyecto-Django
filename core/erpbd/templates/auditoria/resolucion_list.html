@@ -1,0 +1,38 @@
+{% extends 'list.html' %}
+{% load static %}
+
+{% block columns %}
+    <tr>
+        <th scope = "col" > Opciones </th>
+        <th scope = "col" > Fecha Asignación </th>
+        <th scope = "col" > Auditor </th>
+        <th scope = "col" > container tag id </th>
+        <th scope = "col" > container stat dsc </th>
+        <th scope = "col" > trip create</th>
+        <th scope = "col" > location id </th>
+        <th scope = "col" > item </th>
+        <th scope = "col" > descripción </th>
+        <th scope = "col" > label create</th>
+        <th scope = "col" > Estado Resolución </th>
+    </tr>
+{% endblock %}
+
+{% block rows %}
+    <tr>
+    {% for audi in object_list %}
+    <td>
+        <a  href ="{% url 'resolucion_update' audi.id %} " class="btn btn-warning btn-sm" ><i class="fas fa-edit"></i></a>
+    </td>
+        <td> {{audi.last_change_ts }}</td>
+        <td> {{audi.user }}</td>
+        <td> {{audi.container_tag_id}}</td>
+        <td> {{audi.container_stat_dsc}} </td>
+        <td> {{audi.trip_create_date}} </td>
+        <td> {{audi.location_id}} </td>
+        <td> {{audi.item_nbr}} </td>
+        <td> {{audi.item1_desc}} </td>
+        <td> {{audi.label_create_ts}} </td>
+        <td> {{audi.resolucion_cd}} </td>
+    </tr>
+    {% endfor %}
+{% endblock %}

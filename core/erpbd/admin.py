@@ -3,12 +3,12 @@ from core.erpbd.models import *
 # Register your models here.
 
 class AuditoriasAdmin(admin.ModelAdmin):
-    list_display= ("etiqueta","item_nbr","user_audit_code")
-    search_fields = ("etiqueta","item_nbr","user_audit_code")
+    list_display= ("container_tag_id","item_nbr","user_audit_code")
+    search_fields = ("container_tag_id","item_nbr","user_audit_code")
 
 # con la clase podemos ver la lista en el menu admin
 class AsignacionAdmin(admin.ModelAdmin):
-    list_display= ("etiqueta","user_audit_code","user_supervisor_code","fecha_asignacion")
+    list_display= ("container_tag_id","user_audit_code","user_supervisor_code","fecha_asignacion")
     list_filter =("user_supervisor_code","fecha_asignacion",)
     search_fields = ("user_audit_code","user_supervisor_code",)
     date_hierarchy = ("fecha_asignacion")

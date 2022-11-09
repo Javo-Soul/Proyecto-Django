@@ -8,35 +8,37 @@ class AuditoriasDiariasForm(ModelForm):
         for form in self.visible_fields():
             form.field.widget.attrs['class'] = 'form-control'
             form.field.widget.attrs['autocomplete'] = True
-        self.fields['etiqueta'].widget.attrs['autofocus'] = True
+        self.fields['container_tag_id'].widget.attrs['autofocus'] = True
 
     class Meta:
-        model = asignaciones
-        fields ='__all__'#['user_audit_code','etiqueta']
+        model = auditorias_diarias
+        #'__all__'
+        fields =['user','container_tag_id','create_ts'
+                 ,'item_nbr','item1_desc','location_id']
         #template_name = 'auditoria/create.html'
         widget={
-            'etiqueta': Textarea(
+            'container_tag_id': Textarea(
                 attrs= {
                     'placeholder': 'aca',
                 }
             ),
         }
 
-
-class UpdateAsignacionesForm(ModelForm):
+class UpdateResolucionForm(ModelForm):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         for form in self.visible_fields():
             form.field.widget.attrs['class'] = 'form-control'
             form.field.widget.attrs['autocomplete'] = True
-        self.fields['etiqueta'].widget.attrs['autofocus'] = True
+        self.fields['container_tag_id'].widget.attrs['autofocus'] = True
 
     class Meta:
-        model = asignaciones
-        fields ='__all__'#['user_audit_code','etiqueta']
+        model = auditorias_diarias
+        fields = ['user', 'container_tag_id', 'create_ts'
+            , 'item_nbr', 'item1_desc', 'location_id','resolucion_cd']
         #template_name = 'auditoria/create.html'
         widget={
-            'etiqueta': Textarea(
+            'container_tag_id': Textarea(
                 attrs= {
                     'placeholder': 'aca',
                 }
