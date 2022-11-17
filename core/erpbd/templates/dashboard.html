@@ -87,7 +87,7 @@
             <!-- Grafico diario de auditorias-->
             <div class="col-lg-7">
                 <div class="card mb-4">
-                    <div class="card-header"><i class="fas fa-chart-bar me-1"></i>Cantidad de Etiquetas/Cajas Diarias</div>
+                    <div class="card-header"><i class="fas fa-chart-bar me-1"></i>Cantidad de Etiquetas Diarias</div>
                         <figure class="highcharts-figure">
                              <div id="chart_audit"></div>
                         </figure>
@@ -117,7 +117,6 @@
 </main>
 
     <script type="application/javascript">
-    <!--Grafico Auditorias Diarias-->
 Highcharts.chart('chart_audit', {
     chart: {
         type: 'line'
@@ -129,11 +128,11 @@ Highcharts.chart('chart_audit', {
         text: 'Resumen Mensual'
     },
     xAxis: {
-        categories: []
+        categories: {{ graph_pallet_diarios }}
     },
     yAxis: {
         title: {
-            text: 'Cantidad Pallet/Cajas'
+            text: 'Cantidad Pallet Diarios'
         }
     },
     plotOptions: {
@@ -145,16 +144,13 @@ Highcharts.chart('chart_audit', {
         }
     },
     series: [{
-        name: 'Cajas ',
-        data: {{graph_cajas_diarias}}
-    }, {
         name: 'Pallets ',
         data: {{ graph_pallet_diarios }}
     }]
 });
 
 <!--Grafico Torta-->
-    Highcharts.chart('pie_chart', {
+Highcharts.chart('pie_chart', {
     chart: {
         plotBackgroundColor: null,
         plotBorderWidth: null,

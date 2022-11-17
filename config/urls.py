@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from config import views
+from core.homepage.views import IndexView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,4 +25,5 @@ urlpatterns = [
 
     path('erp/',include('core.erpbd.urls')),
     path('report/',include('core.report.urls')),
+    path('',IndexView.as_view(), name = 'index' ),
 ]

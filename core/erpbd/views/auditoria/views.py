@@ -57,7 +57,7 @@ class AsignacionesUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Edición de una Auditorias'
+        context['title'] = 'Asignación de Auditorias'
         context['entity'] = 'auditorias'
         context['list_url'] = reverse_lazy('auditorias')
         context['action'] = 'edit'

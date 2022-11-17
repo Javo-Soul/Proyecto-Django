@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'jquery',
     'core.erpbd',
     'core.report',
+    'core.homepage',
 ]
 
 MIDDLEWARE = [

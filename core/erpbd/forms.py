@@ -10,6 +10,10 @@ class AuditoriasDiariasForm(ModelForm):
             form.field.widget.attrs['autocomplete'] = True
         self.fields['container_tag_id'].widget.attrs['autofocus'] = True
 
+        for form in self.visible_fields():
+            form.field.widget.attrs['readonly'] = True
+
+
     class Meta:
         model = auditorias_diarias
         #'__all__'
@@ -32,9 +36,13 @@ class UpdateResolucionForm(ModelForm):
             form.field.widget.attrs['autocomplete'] = True
         self.fields['container_tag_id'].widget.attrs['autofocus'] = True
 
+        for form in self.visible_fields():
+            form.field.widget.attrs['readonly'] = True
+
+
     class Meta:
         model = auditorias_diarias
-        fields = ['user', 'container_tag_id', 'create_ts'
+        fields = ['container_tag_id', 'create_ts'
             , 'item_nbr', 'item1_desc', 'location_id','resolucion_cd']
         #template_name = 'auditoria/create.html'
         widget={
