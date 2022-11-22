@@ -2,6 +2,9 @@ from django.db import models
 import datetime
 from datetime import datetime
 
+# para signals
+from django.db.models.signals import post_save , post_delete
+from django.dispatch import receiver
 # Create your models here.
 
 class auditorias(models.Model):
@@ -32,17 +35,19 @@ class asignaciones(models.Model):
         db_table = 'asignaciones'
         ordering = ['-fecha_asignacion']
 
-resolucion_cd = [('Pendiente','Pendiente'),
-    ('En Progreso','En Progreso'),
-    ('Terminado','Terminado'),
-    ('Cancelado','Cancelado'),]
 
-user = [('j0c0af6','Auditor 1'),
-    ('v0j0af6','Auditor 2'),
-    ('C0j0a56','Auditor 3'),
-    ('Z0j0a30','Auditor 4'),]
 
 class auditorias_diarias(models.Model):
+    resolucion_cd = [('Pendiente', 'Pendiente'),
+                     ('En Progreso', 'En Progreso'),
+                     ('Terminado', 'Terminado'),
+                     ('Cancelado', 'Cancelado'), ]
+
+    user = [('j0c0af6', 'j0c0af6'),
+            ('v0j0af6', 'v0j0af6'),
+            ('C0j0a56', 'C0j0a56'),
+            ('Z0j0a30', 'Z0j0a30'), ]
+
     dc_nbr=models.CharField(max_length=10)
     user=models.CharField(max_length=8, choices = user ,verbose_name = "Auditor",default='No Asign')
     user_supervisor_code=models.CharField(max_length=8,verbose_name = "Supervisor",default='No Asign')
@@ -80,5 +85,26 @@ class auditorias_diarias(models.Model):
         verbose_name_plural = 'auditorias diarias'
         db_table = 'auditorias_diarias'
         ordering = ['-create_ts']
+
+
+
+class auditorias_diarias_log(models.Model):
+    usuario = models.CharField(max_length=8,null=True)
+    container_tag_id = models.CharField(max_length=20,null=True, verbose_name="container_tag_id")
+    last_change_ts = models.DateTimeField(null=True)
+
+    class Meta():
+        verbose_name = 'auditoria diaria log'
+        verbose_name_plural = 'auditorias diarias log'
+        db_table = 'auditorias_diarias_log'
+        ordering = ['-last_change_ts']
+
+
+@receiver(post_save,sender = auditorias_diarias)
+def audi_diarias_guardar(sender, instance, **kwargs):
+    etiqueta = instance.container_tag_id
+    usuario = instance.user
+
+    print(etiqueta,usuario)
 
 

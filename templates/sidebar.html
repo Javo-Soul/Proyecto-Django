@@ -55,7 +55,7 @@
             </div>
             <div class="sb-sidenav-footer">
                 <div class="small">Logged in as: </div>
-                Javier Carrion
+                {{ request.user.username|safe }}
             </div>
         </nav>
     </div>

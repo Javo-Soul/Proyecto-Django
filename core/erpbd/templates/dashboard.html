@@ -119,7 +119,7 @@
     <script type="application/javascript">
 Highcharts.chart('chart_audit', {
     chart: {
-        type: 'line'
+        type: 'column'
     },
     title: {
         text: ''
@@ -128,7 +128,7 @@ Highcharts.chart('chart_audit', {
         text: 'Resumen Mensual'
     },
     xAxis: {
-        categories: {{ graph_pallet_diarios }}
+        categories: {{ dias_auditorias|safe }}
     },
     yAxis: {
         title: {
@@ -145,8 +145,12 @@ Highcharts.chart('chart_audit', {
     },
     series: [{
         name: 'Pallets ',
-        data: {{ graph_pallet_diarios }}
-    }]
+        data: {{ graph_pallet_diarios|safe }}
+    },
+        {name: 'Asignaciones ',
+        data: {{ graph_asignacion_diaria|safe }}
+    },
+    ]
 });
 
 <!--Grafico Torta-->

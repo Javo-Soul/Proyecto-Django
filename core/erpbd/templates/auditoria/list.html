@@ -6,14 +6,14 @@
     <tr>
         <th scope = "col" > opciones </th>
         <th scope = "col" > Auditor </th>
-        <th scope = "col" > container_tag_id </th>
-        <th scope = "col" > container_stat_dsc </th>
-        <th scope = "col" > trip_create_date </th>
-        <th scope = "col" > location_id </th>
-        <th scope = "col" > item_nbr </th>
+        <th scope = "col" > container tag_id </th>
+        <th scope = "col" > container stat_dsc </th>
+        <th scope = "col" > trip create date </th>
+        <th scope = "col" > location id </th>
+        <th scope = "col" > item nbr </th>
         <th scope = "col" > descripción </th>
-        <th scope = "col" > label_create_ts </th>
-        <th scope = "col" > last_change </th>
+        <th scope = "col" > label create ts </th>
+        <th scope = "col" > last change </th>
     </tr>
 {% endblock %}
 
@@ -26,12 +26,12 @@
         <td> {{audi.user }}</td>
         <td> {{audi.container_tag_id}}</td>
         <td> {{audi.container_stat_dsc}} </td>
-        <td> {{audi.trip_create_date}} </td>
+        <td> {{audi.trip_create_date|date:'Y-m-d' }} </td>
         <td> {{audi.location_id}} </td>
         <td> {{audi.item_nbr}} </td>
         <td> {{audi.item1_desc}} </td>
-        <td> {{audi.label_create_ts}} </td>
-        <td> {{audi.last_change_ts}} </td>
+        <td> {{audi.label_create_ts|date:'Y-m-d H:i' }} </td>
+        <td> {{audi.last_change_ts|date:'Y-m-d H:i'}} </td>
     </tr>
     {% endfor %}
 {% endblock %}

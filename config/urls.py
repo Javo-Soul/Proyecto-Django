@@ -17,10 +17,14 @@ from django.contrib import admin
 from django.urls import path,include
 from config import views
 from core.homepage.views import IndexView
+from core.homepage.views import IndexView
+from core.login.views import loginFormView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('admin/', views.admin, name = 'admin'),
+    path('login/', include('core.login.urls')),
+
     path('admin/erpbd/asignaciones/', views.admin, name = 'asignaciones'),
 
     path('erp/',include('core.erpbd.urls')),

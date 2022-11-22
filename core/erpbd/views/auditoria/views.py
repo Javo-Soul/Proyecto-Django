@@ -17,7 +17,10 @@ class Auditoriasdiariaslistview(ListView):
     template_name = 'auditoria/list.html'
     # aca podria editar la query !
     def get_queryset(self):
-        return auditorias_diarias.objects.filter(container_stat_dsc='Closed').order_by('-last_change_ts')[:1000]
+        lista_auditoria = auditorias_diarias.objects.filter(container_stat_dsc='Closed'
+                                                            ).order_by('-last_change_ts')[:1000]
+
+        return lista_auditoria
     def get_context_data(self, **kwargs): # -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['title'] = 'Listado de Auditorias'
