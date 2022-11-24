@@ -3,6 +3,7 @@ from django.db.models import Sum
 from django.db.models.functions import Coalesce
 from django.http import JsonResponse
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
@@ -11,8 +12,8 @@ from core.erpbd.models import *
 
 class ReportAuditView(TemplateView):
     template_name = 'reports/reportaudit.html'
-
     @method_decorator(csrf_exempt)
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -32,9 +33,13 @@ class ReportAuditView(TemplateView):
                         s.container_tag_id,
                         s.container_stat_dsc,
                         s.trip_create_date.strftime('%Y-%m-%d'),
+                        s.user,
+                        s.user_supervisor_code,
                         s.location_id,
                         s.item_nbr,
+                        s.item1_desc,
                         s.create_ts.strftime('%Y-%m-%d'),
+                        s.resolucion_cd,
                     ])
             else:
                 data['error'] = 'Ha ocurrido un error'

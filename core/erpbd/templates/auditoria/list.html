@@ -6,8 +6,8 @@
     <tr>
         <th scope = "col" > opciones </th>
         <th scope = "col" > Auditor </th>
-        <th scope = "col" > container tag_id </th>
-        <th scope = "col" > container stat_dsc </th>
+        <th scope = "col" > container tag id </th>
+        <th scope = "col" > container stat dsc </th>
         <th scope = "col" > trip create date </th>
         <th scope = "col" > location id </th>
         <th scope = "col" > item nbr </th>
@@ -21,7 +21,7 @@
     <tr>
     {% for audi in object_list %}
     <td>
-        <a  href ="{% url 'auditorias_update' audi.id %} " class="btn btn-secondary btn-sm" ><i class="fas fa-edit"></i></a>
+        <a  href ="{% url 'auditorias_update' audi.id %} " class="btn btn-warning btn-sm" ><i class="fas fa-edit"></i></a>
     </td>
         <td> {{audi.user }}</td>
         <td> {{audi.container_tag_id}}</td>

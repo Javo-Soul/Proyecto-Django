@@ -23,15 +23,15 @@
     <td>
         <a  href ="{% url 'resolucion_update' audi.id %} " class="btn btn-warning btn-sm" ><i class="fas fa-edit"></i></a>
     </td>
-        <td> {{audi.last_change_ts }}</td>
+        <td> {{audi.last_change_ts|date:'Y-m-d H:i'}}</td>
         <td> {{audi.user }}</td>
         <td> {{audi.container_tag_id}}</td>
         <td> {{audi.container_stat_dsc}} </td>
-        <td> {{audi.trip_create_date}} </td>
+        <td> {{audi.trip_create_date|date:'Y-m-d' }} </td>
         <td> {{audi.location_id}} </td>
         <td> {{audi.item_nbr}} </td>
         <td> {{audi.item1_desc}} </td>
-        <td> {{audi.label_create_ts}} </td>
+        <td> {{audi.label_create_ts|date:'Y-m-d H:i' }} </td>
         <td> {{audi.resolucion_cd}} </td>
     </tr>
     {% endfor %}

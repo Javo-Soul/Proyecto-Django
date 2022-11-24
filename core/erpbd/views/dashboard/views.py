@@ -1,5 +1,9 @@
 from multiprocessing import context
 from pkgutil import get_data
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+
 from django.shortcuts import render
 from django.views.generic import ListView, UpdateView, TemplateView
 from django.db.models.functions import TruncMonth, TruncDate , Cast ,Coalesce
@@ -23,6 +27,12 @@ class DashboardView(TemplateView):
     cnt_Awaiting_Orderfill = auditorias_diarias.objects.filter(container_stat_dsc='Awaiting Orderfill').values('container_id').count()
     todo = auditorias_diarias.objects.all()[0:50]
     dias_auditorias = auditorias_diarias.objects.dates('trip_create_date','day')
+
+    @method_decorator(csrf_exempt)
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
     def get_dias_auditorias(self):
         date_auditorias = auditorias_diarias.objects.dates('trip_create_date', 'day')
@@ -57,6 +67,7 @@ class DashboardView(TemplateView):
         #print('esto es asignacion ', asignacion)
         return asignacion
 
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Dashboard'
@@ -75,16 +86,18 @@ class DashboardView(TemplateView):
 
 class DashboardRecepcionView(TemplateView):
     template_name = 'auditoria/resumen.html'
-
     datos = auditorias_diarias.objects.filter(container_stat_dsc='Closed').aggregate(pallet=Count('container_id', distinct=True),
                                                                                      cajas=Sum('ship_unit_qty'))
     pallet_pendientes = asignaciones.objects.filter(user_audit_code='').count()
-
     cnt_closed = auditorias_diarias.objects.filter(container_stat_dsc='Closed').values('container_id').distinct().count()
     cnt_combined = 0
     cnt_Awaiting_Orderfill = auditorias_diarias.objects.filter(container_stat_dsc='Awaiting Orderfill').values('container_id').distinct().count()
-
     todo = auditorias_diarias.objects.all()[0:50]
+
+    @method_decorator(csrf_exempt)
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_cajas_diarias(self):
         year = datetime.now().year
@@ -130,16 +143,18 @@ class DashboardRecepcionView(TemplateView):
 
 class DashboardPreparadoView(TemplateView):
     template_name = 'auditoria/resumen.html'
-
     datos = auditorias_diarias.objects.filter(container_stat_dsc='Closed').aggregate(pallet=Count('container_id', distinct=True),
                                                                                      cajas=Sum('ship_unit_qty'))
     pallet_pendientes = asignaciones.objects.filter(user_audit_code='').count()
-
     cnt_closed = auditorias_diarias.objects.filter(container_stat_dsc='Closed').values('container_id').distinct().count()
     cnt_combined = auditorias_diarias.objects.filter(container_stat_dsc='Combined').values('container_id').distinct().count()
     cnt_Awaiting_Orderfill = auditorias_diarias.objects.filter(container_stat_dsc='Awaiting Orderfill').values('container_id').distinct().count()
-
     todo = auditorias_diarias.objects.all()[0:50]
+
+    @method_decorator(csrf_exempt)
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_cajas_diarias(self):
         year = datetime.now().year
@@ -185,16 +200,18 @@ class DashboardPreparadoView(TemplateView):
 
 class DashboardDespachoView(TemplateView):
     template_name = 'auditoria/resumen.html'
-
     datos = auditorias_diarias.objects.filter(container_stat_dsc='Closed').aggregate(pallet=Count('container_id', distinct=True),
                                                                                      cajas=Sum('ship_unit_qty'))
     pallet_pendientes = asignaciones.objects.filter(user_audit_code='').count()
-
     cnt_closed = auditorias_diarias.objects.filter(container_stat_dsc='Closed').values('container_id').distinct().count()
     cnt_combined = auditorias_diarias.objects.filter(container_stat_dsc='Combined').values('container_id').distinct().count()
     cnt_Awaiting_Orderfill = auditorias_diarias.objects.filter(container_stat_dsc='Awaiting Orderfill').values('container_id').distinct().count()
-
     todo = auditorias_diarias.objects.all()[0:50]
+
+    @method_decorator(csrf_exempt)
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_cajas_diarias(self):
         year = datetime.now().year

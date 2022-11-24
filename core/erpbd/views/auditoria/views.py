@@ -1,4 +1,7 @@
 from django.http import JsonResponse, HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from multiprocessing import context
 from django.shortcuts import render, redirect
 from core.erpbd.models import asignaciones, auditorias_diarias
@@ -15,6 +18,12 @@ from datetime import datetime
 class Auditoriasdiariaslistview(ListView):
     model = auditorias_diarias
     template_name = 'auditoria/list.html'
+
+    @method_decorator(csrf_exempt)
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     # aca podria editar la query !
     def get_queryset(self):
         lista_auditoria = auditorias_diarias.objects.filter(container_stat_dsc='Closed'
@@ -34,6 +43,11 @@ class AuditoriasdiariasCreateView(CreateView):
     form_class = AuditoriasDiariasForm
     template_name = 'auditoria/create.html'
     success_url = reverse_lazy('auditorias')
+
+    @method_decorator(csrf_exempt)
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def post(self,request, *args,**kwargs):
         form = AuditoriasDiariasForm(request.POST)
@@ -58,6 +72,11 @@ class AsignacionesUpdateView(UpdateView):
     template_name = 'auditoria/create.html'
     success_url = reverse_lazy('auditorias')
 
+    @method_decorator(csrf_exempt)
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Asignación de Auditorias'
@@ -73,6 +92,11 @@ class ResolucionListview(ListView):
     model = auditorias_diarias
     template_name = 'auditoria/resolucion_list.html'
     # aca podria editar la query !
+    @method_decorator(csrf_exempt)
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     def get_queryset(self):
         return auditorias_diarias.objects.filter(container_stat_dsc='Closed').exclude(user = 'No Asign').order_by('-last_change_ts')[:1000]
     def get_context_data(self, **kwargs): # -> Dict[str, Any]:
@@ -89,6 +113,11 @@ class ResolucionUpdateView(UpdateView):
     template_name = 'auditoria/create.html'
     success_url = reverse_lazy('resolucion_list')
 
+    @method_decorator(csrf_exempt)
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Resolución de Auditorias'
@@ -100,21 +129,21 @@ class ResolucionUpdateView(UpdateView):
 
 ####################### Formulario de Resolucion ##############
 ###############################################################
-def buscaritem(request):
-    if request.GET["item"]:
-            item = request.GET["item"]
-            if len(item) > 6:
-                print("No Aplica,if")
-                return render(request, 'auditoria/list.html')
-            if len(item) == 0:
-                print("No Aplica,if 2")
-                return render(request, 'auditoria/list.html')
-            else:
-                item_for = request.GET["item"]
-                item_bd = auditorias_diarias.objects.filter(item_nbr=item_for)
-                return render(request, 'auditoria/list.html', {"item_bd": item_bd, "query": item_for})
-    else:
-        return render(request, 'auditoria/list.html')
+#def buscaritem(request):
+#    if request.GET["item"]:
+#            item = request.GET["item"]
+#            if len(item) > 6:
+#                print("No Aplica,if")
+#                return render(request, 'auditoria/list.html')
+#            if len(item) == 0:
+#                print("No Aplica,if 2")
+#                return render(request, 'auditoria/list.html')
+#            else:
+#                item_for = request.GET["item"]
+#                item_bd = auditorias_diarias.objects.filter(item_nbr=item_for)
+#                return render(request, 'auditoria/list.html', {"item_bd": item_bd, "query": item_for})
+#    else:
+#        return render(request, 'auditoria/list.html')
 
 # export a excel
 def export_csv_audit(request):
