@@ -14,6 +14,7 @@
         <th scope = "col" > descripción </th>
         <th scope = "col" > label create</th>
         <th scope = "col" > Estado Resolución </th>
+        <th scope = "col" > Respuesta auditoria </th>
     </tr>
 {% endblock %}
 
@@ -23,8 +24,8 @@
     <td>
         <a  href ="{% url 'resolucion_update' audi.id %} " class="btn btn-warning btn-sm" ><i class="fas fa-edit"></i></a>
     </td>
-        <td> {{audi.last_change_ts|date:'Y-m-d H:i'}}</td>
-        <td> {{audi.user }}</td>
+        <td> {{audi.fecha_Asignacion|date:'Y-m-d H:i'}}</td>
+        <td> {{audi.auditor_id }}</td>
         <td> {{audi.container_tag_id}}</td>
         <td> {{audi.container_stat_dsc}} </td>
         <td> {{audi.trip_create_date|date:'Y-m-d' }} </td>
@@ -33,6 +34,7 @@
         <td> {{audi.item1_desc}} </td>
         <td> {{audi.label_create_ts|date:'Y-m-d H:i' }} </td>
         <td> {{audi.resolucion_cd}} </td>
+        <td> {{audi.obs_auditoria_cd}} </td>
     </tr>
     {% endfor %}
 {% endblock %}

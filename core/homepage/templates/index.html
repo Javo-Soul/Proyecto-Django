@@ -5,10 +5,9 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>iPortfolio Bootstrap Template - Index</title>
+  <title>Auditorias QA</title>
   <meta content="" name="descriptison">
   <meta content="" name="keywords">
-
   <!-- Favicons -->
   <link href="{% static 'img/favicon.png' %}" rel="icon">
   <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
@@ -48,8 +47,7 @@
         <ul>
           <li class="active"><a href="{% url 'dashboard' %}"><i class="icofont-dashboard"></i><span>Dashboard</span></a></li>
           <li><a href="#about"><i class="bx bx-user"></i> <span>About</span></a></li>
-          <li><a href="#contact"><i class="bx bx-envelope"></i> Contact</a></li>
-
+          <li><a href="#contact"><i class="bx bx-envelope"></i> Contact</a></li
             <li>
                 {%  if request.user.is_authenticated %}
                     <a href="{% url 'dashboard' %}">
@@ -61,6 +59,7 @@
                     </a>
                 {% endif %}
             </li>
+          <li><a href="{% url 'admin' %}"><i class="icofont-settings"></i> Configuración</a></li>
           <li><a href="{% url 'logout' %}"><i class="icofont-exit"></i> Salir</a></li>
         </ul>
       </nav><!-- .nav-menu -->

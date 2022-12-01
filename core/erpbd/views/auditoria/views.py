@@ -8,14 +8,19 @@ from core.erpbd.models import asignaciones, auditorias_diarias
 from django.views.generic import CreateView, ListView, UpdateView
 from core.erpbd.forms import AuditoriasDiariasForm, UpdateResolucionForm
 from django.urls import reverse_lazy
-import csv
+
+from core.erpbd.mixins import IsSuperuserMixin
+from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
 from django.http import HttpResponse
+
 import datetime
 from datetime import datetime
+import csv
 # Create your views here.
 
 ####################### Formulario de Asignacion ##############
-class Auditoriasdiariaslistview(ListView):
+class Auditoriasdiariaslistview(PermissionRequiredMixin,ListView):
+    permission_required = 'erpbd.view_auditorias_diarias'
     model = auditorias_diarias
     template_name = 'auditoria/list.html'
 
@@ -28,7 +33,6 @@ class Auditoriasdiariaslistview(ListView):
     def get_queryset(self):
         lista_auditoria = auditorias_diarias.objects.filter(container_stat_dsc='Closed'
                                                             ).order_by('-last_change_ts')[:1000]
-
         return lista_auditoria
     def get_context_data(self, **kwargs): # -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -38,7 +42,8 @@ class Auditoriasdiariaslistview(ListView):
         success_url = reverse_lazy('auditorias')
         return context
 
-class AuditoriasdiariasCreateView(CreateView):
+class AuditoriasdiariasCreateView(LoginRequiredMixin,IsSuperuserMixin,PermissionRequiredMixin,CreateView):
+    permission_required = ('erpbd.view_auditorias_diarias', 'erpbd.change_auditorias_diarias','erpbd.create_auditorias_diarias')
     model = auditorias_diarias
     form_class = AuditoriasDiariasForm
     template_name = 'auditoria/create.html'
@@ -66,7 +71,8 @@ class AuditoriasdiariasCreateView(CreateView):
         context['action'] = 'add'
         return context
 
-class AsignacionesUpdateView(UpdateView):
+class AsignacionesUpdateView(PermissionRequiredMixin,IsSuperuserMixin,UpdateView):
+    permission_required = ('erpbd.view_auditorias_diarias','erpbd.change_auditorias_diarias')
     model = auditorias_diarias
     form_class = AuditoriasDiariasForm
     template_name = 'auditoria/create.html'
@@ -88,17 +94,17 @@ class AsignacionesUpdateView(UpdateView):
 ###############################################################
 
 ####################### Formulario de Resolucion ##############
-class ResolucionListview(ListView):
+class ResolucionListview(LoginRequiredMixin,PermissionRequiredMixin,ListView):
+    permission_required = ('erpbd.view_auditorias_diarias', 'erpbd.change_auditorias_diarias')
     model = auditorias_diarias
     template_name = 'auditoria/resolucion_list.html'
-    # aca podria editar la query !
     @method_decorator(csrf_exempt)
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
-        return auditorias_diarias.objects.filter(container_stat_dsc='Closed').exclude(user = 'No Asign').order_by('-last_change_ts')[:1000]
+        return auditorias_diarias.objects.filter(container_stat_dsc='Closed').exclude(auditor_id = 'No Asign').order_by('-last_change_ts')[:1000]
     def get_context_data(self, **kwargs): # -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['title'] = 'Auditorias Asignadas'
@@ -107,7 +113,8 @@ class ResolucionListview(ListView):
         success_url = reverse_lazy('resolucion_list')
         return context
 
-class ResolucionUpdateView(UpdateView):
+class ResolucionUpdateView(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
+    permission_required = ('erpbd.view_auditorias_diarias', 'erpbd.change_auditorias_diarias')
     model = auditorias_diarias
     form_class = UpdateResolucionForm
     template_name = 'auditoria/create.html'
@@ -152,13 +159,13 @@ def export_csv_audit(request):
                                       str(datetime.now().strftime('%Y-%m-%d %H:%M')) + '.csv'
 
     writer = csv.writer(response)
-    writer.writerow(['user','Supervisor','container_tag_id', 'container_stat_dsc', 'trip_create_date', 'location_id',
+    writer.writerow(['auditor_id','supervisor_id_id','container_tag_id', 'container_stat_dsc', 'trip_create_date', 'location_id',
                      'item_nbr','item1_desc','create_ts','last_change_ts'])
 
     auditorias = auditorias_diarias.objects.filter(container_stat_dsc='Closed').order_by('-last_change_ts')[:1000]
 
     for audit in auditorias:
-        writer.writerow([audit.user,audit.user_supervisor_code
+        writer.writerow([audit.auditor_id,audit.supervisor_id_id
                         , audit.container_tag_id + '_', audit.container_stat_dsc
                         ,audit.trip_create_date.strftime('%Y-%m-%d %H:%M'),audit.location_id
                         ,audit.item_nbr , audit.item1_desc

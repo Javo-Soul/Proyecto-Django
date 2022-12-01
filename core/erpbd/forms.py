@@ -17,7 +17,7 @@ class AuditoriasDiariasForm(ModelForm):
     class Meta:
         model = auditorias_diarias
         #'__all__'
-        fields =['user','container_tag_id','create_ts'
+        fields =['auditor_id','container_tag_id','create_ts'
                  ,'item_nbr','item1_desc','location_id']
         #template_name = 'auditoria/create.html'
         widget={
@@ -43,12 +43,12 @@ class UpdateResolucionForm(ModelForm):
     class Meta:
         model = auditorias_diarias
         fields = ['container_tag_id', 'create_ts'
-            , 'item_nbr', 'item1_desc', 'location_id','resolucion_cd']
+            , 'item_nbr', 'item1_desc', 'location_id','resolucion_cd','obs_auditoria_cd']
         #template_name = 'auditoria/create.html'
         widget={
             'container_tag_id': Textarea(
                 attrs= {
-                    'placeholder': 'aca',
+                    'placeholder': '',
                 }
             ),
         }

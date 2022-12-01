@@ -20,8 +20,8 @@ class DashboardView(TemplateView):
     template_name = 'dashboard.html'
     datos = auditorias_diarias.objects.filter(container_stat_dsc='Closed').aggregate(pallet=Count('container_id'),
                                                                                      cajas=Sum('ship_unit_qty'))
-    pallet_pendientes = auditorias_diarias.objects.filter(container_stat_dsc='Closed',user='No Asign').count()
-    pallet_asignados = auditorias_diarias.objects.filter(container_stat_dsc='Closed').exclude(user='No Asign').count()
+    pallet_pendientes = auditorias_diarias.objects.filter(container_stat_dsc='Closed',auditor_id='No Asign').count()
+    pallet_asignados = auditorias_diarias.objects.filter(container_stat_dsc='Closed').exclude(auditor_id='No Asign').count()
     cnt_closed = auditorias_diarias.objects.filter(container_stat_dsc='Closed').values('container_id').count()
     cnt_combined = auditorias_diarias.objects.filter(container_stat_dsc='Combined').values('container_id').count()
     cnt_Awaiting_Orderfill = auditorias_diarias.objects.filter(container_stat_dsc='Awaiting Orderfill').values('container_id').count()
@@ -60,13 +60,12 @@ class DashboardView(TemplateView):
         dias = self.dias_auditorias
         asignacion = []
         for i in range(len(dias)):
-            total = auditorias_diarias.objects.filter(container_stat_dsc='Closed',label_create_ts__date=dias[i]).exclude(user = 'No Asign').aggregate(
+            total = auditorias_diarias.objects.filter(container_stat_dsc='Closed',label_create_ts__date=dias[i]).exclude(auditor_id = 'No Asign').aggregate(
                 r=Coalesce(Count('container_id', distinct=True), 0)).get('r')
             asignacion.append(total)
 
         #print('esto es asignacion ', asignacion)
         return asignacion
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -86,13 +85,12 @@ class DashboardView(TemplateView):
 
 class DashboardRecepcionView(TemplateView):
     template_name = 'auditoria/resumen.html'
-    datos = auditorias_diarias.objects.filter(container_stat_dsc='Closed').aggregate(pallet=Count('container_id', distinct=True),
-                                                                                     cajas=Sum('ship_unit_qty'))
-    pallet_pendientes = asignaciones.objects.filter(user_audit_code='').count()
-    cnt_closed = auditorias_diarias.objects.filter(container_stat_dsc='Closed').values('container_id').distinct().count()
+    datos = 0
+    pallet_pendientes = 0
+    cnt_closed = 0
     cnt_combined = 0
-    cnt_Awaiting_Orderfill = auditorias_diarias.objects.filter(container_stat_dsc='Awaiting Orderfill').values('container_id').distinct().count()
-    todo = auditorias_diarias.objects.all()[0:50]
+    cnt_Awaiting_Orderfill = 0
+    todo = 0
 
     @method_decorator(csrf_exempt)
     @method_decorator(login_required)
@@ -143,13 +141,12 @@ class DashboardRecepcionView(TemplateView):
 
 class DashboardPreparadoView(TemplateView):
     template_name = 'auditoria/resumen.html'
-    datos = auditorias_diarias.objects.filter(container_stat_dsc='Closed').aggregate(pallet=Count('container_id', distinct=True),
-                                                                                     cajas=Sum('ship_unit_qty'))
-    pallet_pendientes = asignaciones.objects.filter(user_audit_code='').count()
-    cnt_closed = auditorias_diarias.objects.filter(container_stat_dsc='Closed').values('container_id').distinct().count()
-    cnt_combined = auditorias_diarias.objects.filter(container_stat_dsc='Combined').values('container_id').distinct().count()
-    cnt_Awaiting_Orderfill = auditorias_diarias.objects.filter(container_stat_dsc='Awaiting Orderfill').values('container_id').distinct().count()
-    todo = auditorias_diarias.objects.all()[0:50]
+    datos = 0
+    pallet_pendientes = 0
+    cnt_closed = 0
+    cnt_combined = 0
+    cnt_Awaiting_Orderfill = 0
+    todo = 0
 
     @method_decorator(csrf_exempt)
     @method_decorator(login_required)
@@ -200,13 +197,12 @@ class DashboardPreparadoView(TemplateView):
 
 class DashboardDespachoView(TemplateView):
     template_name = 'auditoria/resumen.html'
-    datos = auditorias_diarias.objects.filter(container_stat_dsc='Closed').aggregate(pallet=Count('container_id', distinct=True),
-                                                                                     cajas=Sum('ship_unit_qty'))
-    pallet_pendientes = asignaciones.objects.filter(user_audit_code='').count()
-    cnt_closed = auditorias_diarias.objects.filter(container_stat_dsc='Closed').values('container_id').distinct().count()
-    cnt_combined = auditorias_diarias.objects.filter(container_stat_dsc='Combined').values('container_id').distinct().count()
-    cnt_Awaiting_Orderfill = auditorias_diarias.objects.filter(container_stat_dsc='Awaiting Orderfill').values('container_id').distinct().count()
-    todo = auditorias_diarias.objects.all()[0:50]
+    datos = 0
+    pallet_pendientes = 0
+    cnt_closed = 0
+    cnt_combined = 0
+    cnt_Awaiting_Orderfill = 0
+    todo = 0
 
     @method_decorator(csrf_exempt)
     @method_decorator(login_required)

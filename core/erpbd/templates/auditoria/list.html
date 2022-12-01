@@ -23,7 +23,7 @@
     <td>
         <a  href ="{% url 'auditorias_update' audi.id %} " class="btn btn-warning btn-sm" ><i class="fas fa-edit"></i></a>
     </td>
-        <td> {{audi.user }}</td>
+        <td> {{audi.auditor_id }}</td>
         <td> {{audi.container_tag_id}}</td>
         <td> {{audi.container_stat_dsc}} </td>
         <td> {{audi.trip_create_date|date:'Y-m-d' }} </td>
