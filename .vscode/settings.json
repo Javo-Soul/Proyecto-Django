@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/eb67c04e-af0d-4b47-9b91-8b1cb076e2ec/AppServices/subscriptions/eb67c04e-af0d-4b47-9b91-8b1cb076e2ec/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/AUDITORIAS-WM",
+    "appService.deploySubpath": "."
+}
