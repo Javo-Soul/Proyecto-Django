@@ -18,14 +18,23 @@ from datetime import datetime
 # Create your views here.
 class DashboardView(TemplateView):
     template_name = 'dashboard.html'
-    datos = auditorias_diarias.objects.filter(container_stat_dsc='Closed').aggregate(pallet=Count('container_id'),
-                                                                                     cajas=Sum('ship_unit_qty'))
-    pallet_pendientes = auditorias_diarias.objects.filter(container_stat_dsc='Closed',auditor_id='No Asign').count()
-    pallet_asignados = auditorias_diarias.objects.filter(container_stat_dsc='Closed').exclude(auditor_id='No Asign').count()
-    cnt_closed = auditorias_diarias.objects.filter(container_stat_dsc='Closed').values('container_id').count()
-    cnt_combined = auditorias_diarias.objects.filter(container_stat_dsc='Combined').values('container_id').count()
-    cnt_Awaiting_Orderfill = auditorias_diarias.objects.filter(container_stat_dsc='Awaiting Orderfill').values('container_id').count()
-    todo = auditorias_diarias.objects.all()[0:50]
+    #datos = [pallet=0,cajas=0]
+
+    pallet_pendientes = 0
+    pallet_asignados = 0
+    cnt_closed = 0
+    cnt_combined = 0
+    cnt_Awaiting_Orderfill = 0
+    todo = 0
+
+    #datos = auditorias_diarias.objects.filter(container_stat_dsc='Closed').aggregate(pallet=Count('container_id'),
+    #                                                                                  cajas=Sum('ship_unit_qty'))
+    # pallet_pendientes = auditorias_diarias.objects.filter(container_stat_dsc='Closed',auditor_id='No Asign').count()
+    # pallet_asignados = auditorias_diarias.objects.filter(container_stat_dsc='Closed').exclude(auditor_id='No Asign').count()
+    # cnt_closed = auditorias_diarias.objects.filter(container_stat_dsc='Closed').values('container_id').count()
+    # cnt_combined = auditorias_diarias.objects.filter(container_stat_dsc='Combined').values('container_id').count()
+    # cnt_Awaiting_Orderfill = auditorias_diarias.objects.filter(container_stat_dsc='Awaiting Orderfill').values('container_id').count()
+    # todo = auditorias_diarias.objects.all()[0:50]
     dias_auditorias = auditorias_diarias.objects.dates('trip_create_date','day')
 
     @method_decorator(csrf_exempt)
@@ -45,17 +54,15 @@ class DashboardView(TemplateView):
         return str(date_audi)
     def get_pallet_diarias(self):
         mes = datetime.now().month
-        #dias = auditorias_diarias.objects.annotate(Fecha_etiqueta = TruncDate('trip_create_date')).values('Fecha_etiqueta').annotate(cantidad = Count('container_id')).order_by('trip_create_date')
-        #dias = auditorias_diarias.objects.values('trip_create_date__date').annotate(count = Count('container_id')).values('trip_create_date__date').order_by('trip_create_date__date')
         dias = self.dias_auditorias
         pallet = []
         for i in range(len(dias)):
             total = auditorias_diarias.objects.filter(container_stat_dsc='Closed',trip_create_date__date=dias[i]).aggregate(
                 r=Coalesce(Count('container_id', distinct=True), 0)).get('r')
             pallet.append(total)
-
         #print('esto es pallet ', pallet)
         return pallet
+
     def get_asignaciones_diarias(self):
         dias = self.dias_auditorias
         asignacion = []
@@ -71,8 +78,8 @@ class DashboardView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Dashboard'
         context['dias_auditorias'] = self.get_dias_auditorias()
-        context['cajas_totales'] = self.datos['cajas']
-        context['pallet_totales'] = self.datos['pallet']
+        context['cajas_totales'] = 0
+        context['pallet_totales'] = 0
         context['pallet_asignados'] = self.pallet_asignados
         context['pallet_pendientes'] = self.pallet_pendientes
         context['graph_asignacion_diaria'] = self.get_asignaciones_diarias()
