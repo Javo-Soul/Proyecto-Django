@@ -11,7 +11,7 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-settings_module = 'quickstartproject.production' if 'WEBSITE_HOSTNAME' in os.environ else 'config.settings'
+settings_module = 'quickstartproject.production' if 'auditoria-wm' in os.environ else 'auditoria-wm'
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', settings_module)
 
 #os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
