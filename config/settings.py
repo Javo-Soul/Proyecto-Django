@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     #libs
     'widget_tweaks',
     # apps
-    'jquery',
+#    'jquery',
     'core.erpbd',
     'core.report',
     'core.homepage',
