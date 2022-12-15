@@ -6,6 +6,7 @@ import os
 ALLOWED_HOSTS = [os.environ['auditoria-wm']] if 'auditoria-wm' in os.environ else []
 CSRF_TRUSTED_ORIGINS = ['https://'+ os.environ['auditoria-wm']] if 'auditoria-wm' in os.environ else []
 DEBUG = False
+
 # WhiteNoise configuration
 MIDDLEWARE = [                                                                   
     'django.middleware.security.SecurityMiddleware',
