@@ -20,21 +20,21 @@ class DashboardView(TemplateView):
     template_name = 'dashboard.html'
     #datos = [pallet=0,cajas=0]
 
-    pallet_pendientes = 0
-    pallet_asignados = 0
-    cnt_closed = 0
-    cnt_combined = 0
-    cnt_Awaiting_Orderfill = 0
-    todo = 0
+    # pallet_pendientes = 0
+    # pallet_asignados = 0
+    # cnt_closed = 0
+    # cnt_combined = 0
+    # cnt_Awaiting_Orderfill = 0
+    # todo = 0
 
-    #datos = auditorias_diarias.objects.filter(container_stat_dsc='Closed').aggregate(pallet=Count('container_id'),
-    #                                                                                  cajas=Sum('ship_unit_qty'))
-    # pallet_pendientes = auditorias_diarias.objects.filter(container_stat_dsc='Closed',auditor_id='No Asign').count()
-    # pallet_asignados = auditorias_diarias.objects.filter(container_stat_dsc='Closed').exclude(auditor_id='No Asign').count()
-    # cnt_closed = auditorias_diarias.objects.filter(container_stat_dsc='Closed').values('container_id').count()
-    # cnt_combined = auditorias_diarias.objects.filter(container_stat_dsc='Combined').values('container_id').count()
-    # cnt_Awaiting_Orderfill = auditorias_diarias.objects.filter(container_stat_dsc='Awaiting Orderfill').values('container_id').count()
-    # todo = auditorias_diarias.objects.all()[0:50]
+    datos = auditorias_diarias.objects.filter(container_stat_dsc='Closed').aggregate(pallet=Count('container_id'),
+                                                                                      cajas=Sum('ship_unit_qty'))
+    pallet_pendientes = auditorias_diarias.objects.filter(container_stat_dsc='Closed',auditor_id='No Asign').count()
+    pallet_asignados = auditorias_diarias.objects.filter(container_stat_dsc='Closed').exclude(auditor_id='No Asign').count()
+    cnt_closed = auditorias_diarias.objects.filter(container_stat_dsc='Closed').values('container_id').count()
+    cnt_combined = auditorias_diarias.objects.filter(container_stat_dsc='Combined').values('container_id').count()
+    cnt_Awaiting_Orderfill = auditorias_diarias.objects.filter(container_stat_dsc='Awaiting Orderfill').values('container_id').count()
+    todo = auditorias_diarias.objects.all()[0:50]
     dias_auditorias = auditorias_diarias.objects.dates('trip_create_date','day')
 
     @method_decorator(csrf_exempt)

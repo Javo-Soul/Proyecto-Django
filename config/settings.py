@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-9vj*w49-vm@nz9idppg@!i%%wy@h2#1tz3_jh80$z#b723ww3%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = db.SQLITE
+DATABASES = db.POSTGRESQL
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -127,8 +127,11 @@ USE_TZ = True
 
 #original
 STATIC_URL = '/static/'
-#STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static').replace('\\', '/')
+
 
 #Azure
 #STATICFILES_DIRS = (str(BASE_DIR.joinpath('static')),)
