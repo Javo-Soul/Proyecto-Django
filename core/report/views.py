@@ -34,12 +34,11 @@ class ReportAuditView(TemplateView):
                         s.container_stat_dsc,
                         s.trip_create_date.strftime('%Y-%m-%d'),
                         s.user,
-                        s.user_supervisor_code,
+                        s.auditor_id[0],
                         s.location_id,
                         s.item_nbr,
                         s.item1_desc,
                         s.create_ts.strftime('%Y-%m-%d'),
-                        s.resolucion_cd,
                     ])
             else:
                 data['error'] = 'Ha ocurrido un error'
